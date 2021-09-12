@@ -54,7 +54,7 @@
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, ducimus autem asperiores eos rem ex officiis vitae atque similique sed!
       </div>
       <div class="testimonial-image"> 
-        <img src="">
+        <img [image-source]>
         <div class="testimonial-name">[name]</div>
       </div>
     </div>
@@ -95,14 +95,15 @@
     });
 
     function loadCards2(i) {
-      return new Promise( (res, rej) => {
-        fetch("https://randomuser.me/api/?inc=name")
+      return new Promise( (res, rej) => { 
+        fetch("https://randomuser.me/api/?inc=name,picture")
           .then(d => d.json() )
           .then( user => {
             let card = $("#testimonial-card").clone().html(function(index, oldHTML) { 
               let newHTML = "";
               newHTML = oldHTML.replace("[name]", `${user.results[0].name.first} ${user.results[0].name.last}`);
-              newHTML = newHTML.replace("src=\"\"", `src="https://randomuser.me/api/portraits/men/${i}.jpg"`);
+              // newHTML = newHTML.replace("[image-source]", `src="https://randomuser.me/api/portraits/men/${i}.jpg"`);
+              newHTML = newHTML.replace("[image-source]", `src="${user.results[0].picture.large}"`);
               // newHTML = newHTML.replace(/[Example Replace String]/g, "Replacement"); // regex for global replace
               return newHTML;
             })
@@ -113,6 +114,7 @@
       })
     }
 
+    // Wrong way to do it
     function loadCards(numCards) {
       return new Promise( (res, rej) => {
         let j=0
